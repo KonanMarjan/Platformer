@@ -17,9 +17,6 @@ public class PlayerController : MonoBehaviour {
     public Transform groundCheck;  // ground check circle
     public Transform wallCheck;    // wall check circle
 
-
-    private Vector2 touchOrigin = -Vector2.one;
-
 	// Use this for initialization
 	void Start () 
     {
@@ -29,22 +26,11 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
- #if UNITY_STANDALONE || UNITY_WEBPLAYER
-        /* 
-         * keyboard control
-         */
-#else
 
-        if (Input.touchCount > 0)
-        {
-            Touch myTouch = Input.touches[0];
-            touchOrigin = myTouch.position;
-        }
-#endif
 
 	}
     void FixedUpdate()
     {
-
+        rigidbody2D.velocity = new Vector2(playerLineSpeed,0);
     }
 }
