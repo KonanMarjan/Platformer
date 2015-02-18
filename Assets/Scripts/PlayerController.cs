@@ -17,20 +17,32 @@ public class PlayerController : MonoBehaviour {
     public Transform groundCheck;  // ground check circle
     public Transform wallCheck;    // wall check circle
 
+    private bool isJump = false;
+
+
+    void Jump()
+    {
+        rigidbody2D.velocity = new Vector2(jumpForceX, jumpForceY);
+    }
 	// Use this for initialization
 	void Start () 
     {
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-
-
+        if (Input.GetKeyDown(KeyCode.Space))
+            isJump = true;
 	}
     void FixedUpdate()
     {
-        rigidbody2D.velocity = new Vector2(playerLineSpeed,0);
+        rigidbody2D.velocity = new Vector2(playerLineSpeed,rigidbody2D.velocity.y);
+        if (isJump)
+        {
+            Jump();
+            isJump = false;
+        }
     }
 }
