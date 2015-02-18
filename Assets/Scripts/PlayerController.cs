@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
     private float radius = 0.02f;     // radius of groundcheck circle
     private bool isJump = false;      // jump button pressed;
     private bool grounded = false;    // player is grounded
+    private bool wallAttached = false;
     private bool doubleJump = true;   // double jump is allow
 
 
@@ -33,6 +34,10 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
+        float groundCheckCoordY = transform.position.y - (playerHigh / 2f - radius);    // vertical coordinates of groundCheck object
+        float wallCheckCoordX = transform.position.x + (playerWidth / 2f -  radius); // horizontal coordinates of wallCheck object
+        groundCheck.transform.position = new Vector3(transform.position.x, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
+        wallCheck.transform.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
 	}
 	
@@ -45,13 +50,24 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, radius, whatIsGround); // check grounded of player
+        wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + 3 *radius, wallCheck.position.y + playerHigh), whatIsWall); // check wall attach of player
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
             doubleJump = true;                      // if on the ground allow double jump
         }
+        if (wallAttached)
+        {
+            if (!grounded)
+            {
+                rigidbody2D.velocity = new Vector2(0, -slideSpeed);  // player slide
+            }
+        }
+        else
+        {
+            rigidbody2D.velocity = new Vector2(playerCurLineSpeed, rigidbody2D.velocity.y);  // movig player with const speed
+        }
 
-        rigidbody2D.velocity = new Vector2(playerCurLineSpeed, rigidbody2D.velocity.y);  // movig player with const speed
         if (isJump)                //  if jump button pressed
         {
             if (grounded)          // if player on the ground

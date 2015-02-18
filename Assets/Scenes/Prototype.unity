@@ -464,6 +464,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2009283829}
   - {fileID: 2100514687}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -482,9 +483,9 @@ MonoBehaviour:
   jumpForceX: 5
   jumpForceY: 70
   wallRunSpeed: 0
-  slideSpeed: 0
-  playerHigh: 0
-  playerWidth: 0
+  slideSpeed: 50
+  playerHigh: 15
+  playerWidth: 10
   groundRushInc: 0
   groundRushLimit: 0
   whatIsGround:
@@ -492,9 +493,9 @@ MonoBehaviour:
     m_Bits: 256
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   groundCheck: {fileID: 2100514687}
-  wallCheck: {fileID: 0}
+  wallCheck: {fileID: 2009283829}
 --- !u!50 &1995256788
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -532,6 +533,33 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_Radius: 5.04211855
   m_Center: {x: 0, y: -2.46000004}
+--- !u!1 &2009283828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2009283829}
+  m_Layer: 0
+  m_Name: wallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: -1203168336, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2009283829
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2009283828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5, y: -7.48000002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1995256786}
+  m_RootOrder: 0
 --- !u!1 &2100514686
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,4 +586,4 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1995256786}
-  m_RootOrder: 0
+  m_RootOrder: 1
