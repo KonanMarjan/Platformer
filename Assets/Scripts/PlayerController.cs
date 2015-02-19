@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour {
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
             doubleJump = true;                      // if on the ground allow double jump
+            anim.SetBool("doubleJump", false); 
         }
         if (wallAttached)
         {
@@ -94,6 +95,7 @@ public class PlayerController : MonoBehaviour {
             {
                 Jump(false);         // do the second jump (flag "false" is telling that it`s not a first jump)
                 doubleJump = false;  // forbid double jump
+                anim.SetBool("doubleJump", true);
             }
             if (wallAttached)
             {
