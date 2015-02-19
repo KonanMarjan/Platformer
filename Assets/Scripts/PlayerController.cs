@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
     public float jumpForceY;       // jump force by Y axis
     public float wallRunSpeed;     // speed of wall run
     public float slideSpeed;       // speed of slide by wall
-    public float playerHigh;       // high of player
+    public float playerHeight;       // height of player
     public float playerWidth;      // width of player
     public float groundRushInc;    // increment of line sdeed by doing ground rush
     public float groundRushLimit;  // max line speed whed rushing
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     private bool grounded = false;    // player is grounded
     private bool wallAttached = false;
     private bool doubleJump = true;   // double jump is allow
+    private Animator anim; 
 
 
     void Jump(bool firstJump)
@@ -45,8 +46,9 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
+        anim = GetComponent<Animator>();
         wallCheckWidth = 3 * radius;
-        float groundCheckCoordY = transform.position.y - (playerHigh / 2f - radius);    // vertical coordinates of groundCheck object
+        float groundCheckCoordY = transform.position.y - (playerHeight / 2f - radius);    // vertical coordinates of groundCheck object
         float wallCheckCoordX = transform.position.x + (playerWidth / 2f -  radius); // horizontal coordinates of wallCheck object
         groundCheck.transform.position = new Vector3(transform.position.x, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
         wallCheck.transform.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
@@ -62,7 +64,9 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, radius, whatIsGround); // check grounded of player
-        wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckWidth, wallCheck.position.y + playerHigh), whatIsWall); // check wall attach of player
+        wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckWidth, wallCheck.position.y + playerHeight), whatIsWall); // check wall attach of player
+        anim.SetBool("wallAttached", wallAttached);
+        anim.SetBool("grounded", grounded);
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
