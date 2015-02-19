@@ -6,15 +6,66 @@ public class CameraFollow : MonoBehaviour {
     public GameObject player;
     public float cameraOffsetX;
     public float cameraOffsetY;
-	// Use this for initialization
+    public float cameraStepX;
+
+    private bool changeSide = false; // flag allow to chage side
+
+
+    /* forbid change side and correction position of camera */
+    void SetChangeSideFalse()
+    {
+        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z);
+        changeSide = false;
+    }
+    /*changes side*/
+    void ChangeSide()
+    {
+        if (cameraOffsetX < 0) // facing left
+        {
+            if (transform.position.x - player.transform.position.x > cameraOffsetX)
+            {
+                transform.position = new Vector3(transform.position.x - cameraStepX, transform.position.y, transform.position.z); // transport camera to other side
+            }
+            else
+            {
+                SetChangeSideFalse();
+            }
+        } 
+        else                  // facing right
+        {
+            if (transform.position.x - player.transform.position.x < cameraOffsetX)
+            {
+                transform.position = new Vector3(transform.position.x + cameraStepX, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                SetChangeSideFalse();
+            }
+        }
+
+    }
+    // Use this for initialization
 	void Start () 
     {
-	
+        
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        transform.position = new Vector3 (player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z);
+        if ((player.transform.localScale.x < 0 && cameraOffsetX > 0) || (player.transform.localScale.x > 0 && cameraOffsetX < 0)) // check change of facing
+        {
+            cameraOffsetX = -cameraOffsetX;
+            changeSide = true;
+        }
+        if (changeSide)
+        {
+            ChangeSide();
+        }
+        else
+        {
+            transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z); // following camera
+        }
+
 	}
 }
