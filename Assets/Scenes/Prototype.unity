@@ -136,7 +136,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 54
+  orthographic size: 60
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -212,7 +212,7 @@ BoxCollider2D:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 87008322}
   m_Enabled: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fc97fdb067e8ac943bc8d1293103da12, type: 2}
   m_IsTrigger: 0
   m_Size: {x: 2, y: 50}
   m_Center: {x: 0, y: 0}
@@ -374,7 +374,7 @@ BoxCollider2D:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1942643297}
   m_Enabled: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fc97fdb067e8ac943bc8d1293103da12, type: 2}
   m_IsTrigger: 0
   m_Size: {x: 2, y: 50}
   m_Center: {x: 0, y: 0}
@@ -546,7 +546,7 @@ MonoBehaviour:
   jumpForceX: 5
   jumpForceY: 70
   wallRunSpeed: 0
-  slideSpeed: 50
+  slideSpeed: 20
   playerHigh: 15
   playerWidth: 10
   groundRushInc: 0
