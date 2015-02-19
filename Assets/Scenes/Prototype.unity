@@ -136,7 +136,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 60
+  orthographic size: 54
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -487,6 +487,7 @@ GameObject:
   - 61: {fileID: 1995256789}
   - 50: {fileID: 1995256788}
   - 114: {fileID: 1995256787}
+  - 95: {fileID: 1995256791}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -595,6 +596,21 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_Radius: 5.04211855
   m_Center: {x: 0, y: -2.46000004}
+--- !u!95 &1995256791
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1995256784}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e53156dfd5274304590f8e079f314c6c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2009283828
 GameObject:
   m_ObjectHideFlags: 0

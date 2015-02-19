@@ -1,20 +1,20 @@
 fileFormatVersion: 2
-guid: 8652b7bc75a0bce4d93960f15074bfae
+guid: 766407d242ebba14cbd98eaf4c8bcd89
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Simple_animation_small_spritesheet_0
-    21300002: Simple_animation_small_spritesheet_1
-    21300004: Simple_animation_small_spritesheet_2
-    21300006: Simple_animation_small_spritesheet_3
-    21300008: Simple_animation_small_spritesheet_4
-    21300010: Simple_animation_small_spritesheet_5
-    21300012: Simple_animation_small_spritesheet_6
-    21300014: Simple_animation_small_spritesheet_7
-    21300016: Simple_animation_small_spritesheet_8
-    21300018: Simple_animation_small_spritesheet_9
-    21300020: Simple_animation_small_spritesheet_10
-    21300022: Simple_animation_small_spritesheet_11
-    21300024: Simple_animation_small_spritesheet_12
+    21300000: Simple_animation_small_spritesheet2_0
+    21300002: Simple_animation_small_spritesheet2_1
+    21300004: Simple_animation_small_spritesheet2_2
+    21300006: Simple_animation_small_spritesheet2_3
+    21300008: Simple_animation_small_spritesheet2_4
+    21300010: Simple_animation_small_spritesheet2_5
+    21300012: Simple_animation_small_spritesheet2_6
+    21300014: Simple_animation_small_spritesheet2_7
+    21300016: Simple_animation_small_spritesheet2_8
+    21300018: Simple_animation_small_spritesheet2_9
+    21300020: Simple_animation_small_spritesheet2_10
+    21300022: Simple_animation_small_spritesheet2_11
+    21300024: Simple_animation_small_spritesheet2_12
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,7 +56,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Simple_animation_small_spritesheet_0
+    - name: Simple_animation_small_spritesheet2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -66,7 +66,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_1
+    - name: Simple_animation_small_spritesheet2_1
       rect:
         serializedVersion: 2
         x: 100
@@ -76,7 +76,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_2
+    - name: Simple_animation_small_spritesheet2_2
       rect:
         serializedVersion: 2
         x: 200
@@ -86,7 +86,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_3
+    - name: Simple_animation_small_spritesheet2_3
       rect:
         serializedVersion: 2
         x: 300
@@ -96,7 +96,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_4
+    - name: Simple_animation_small_spritesheet2_4
       rect:
         serializedVersion: 2
         x: 400
@@ -106,7 +106,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_5
+    - name: Simple_animation_small_spritesheet2_5
       rect:
         serializedVersion: 2
         x: 500
@@ -116,7 +116,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_6
+    - name: Simple_animation_small_spritesheet2_6
       rect:
         serializedVersion: 2
         x: 600
@@ -126,7 +126,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_7
+    - name: Simple_animation_small_spritesheet2_7
       rect:
         serializedVersion: 2
         x: 700
@@ -136,7 +136,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_8
+    - name: Simple_animation_small_spritesheet2_8
       rect:
         serializedVersion: 2
         x: 800
@@ -146,7 +146,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_9
+    - name: Simple_animation_small_spritesheet2_9
       rect:
         serializedVersion: 2
         x: 900
@@ -156,7 +156,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_10
+    - name: Simple_animation_small_spritesheet2_10
       rect:
         serializedVersion: 2
         x: 1000
@@ -166,7 +166,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_11
+    - name: Simple_animation_small_spritesheet2_11
       rect:
         serializedVersion: 2
         x: 1100
@@ -176,7 +176,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Simple_animation_small_spritesheet_12
+    - name: Simple_animation_small_spritesheet2_12
       rect:
         serializedVersion: 2
         x: 1200
