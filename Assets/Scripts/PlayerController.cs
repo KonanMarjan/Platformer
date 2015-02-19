@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 
     private float playerCurLineSpeed; // current players speed
     private float radius = 0.02f;     // radius of groundcheck circle
+    private float wallCheckWidth;     // width of rectangle for wallCheck
     private bool isJump = false;      // jump button pressed;
     private bool grounded = false;    // player is grounded
     private bool wallAttached = false;
@@ -31,9 +32,20 @@ public class PlayerController : MonoBehaviour {
             if (firstJump)                         //  change line speed if it`s a first jump
                 playerCurLineSpeed += jumpForceX;  //  horizontal component of jump force
     }
+
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+        playerCurLineSpeed = -playerCurLineSpeed;
+        playerLineSpeed = -playerLineSpeed;
+        wallCheckWidth = -wallCheckWidth;
+    }
 	// Use this for initialization
 	void Start () 
     {
+        wallCheckWidth = 3 * radius;
         float groundCheckCoordY = transform.position.y - (playerHigh / 2f - radius);    // vertical coordinates of groundCheck object
         float wallCheckCoordX = transform.position.x + (playerWidth / 2f -  radius); // horizontal coordinates of wallCheck object
         groundCheck.transform.position = new Vector3(transform.position.x, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
@@ -50,7 +62,7 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, radius, whatIsGround); // check grounded of player
-        wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + 3 *radius, wallCheck.position.y + playerHigh), whatIsWall); // check wall attach of player
+        wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckWidth, wallCheck.position.y + playerHigh), whatIsWall); // check wall attach of player
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
@@ -78,6 +90,12 @@ public class PlayerController : MonoBehaviour {
             {
                 Jump(false);         // do the second jump (flag "false" is telling that it`s not a first jump)
                 doubleJump = false;  // forbid double jump
+            }
+            if (wallAttached)
+            {
+                Flip();
+                Jump(true);
+                doubleJump = true;
             }
             isJump = false;          // reset info about jump button pressed
         }
