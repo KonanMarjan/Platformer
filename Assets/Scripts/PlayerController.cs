@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour {
                 Flip();
                 Jump(true);
                 doubleJump = true;
+                anim.SetBool("doubleJump", false);
             }
             isJump = false;          // reset info about jump button pressed
         }

@@ -7,26 +7,29 @@ public class CameraFollow : MonoBehaviour {
     public float cameraOffsetX;
     public float cameraOffsetY;
     public float cameraStepX;
+    public float cameraStepY;
     public float playerSpaceAbove;
     public float playerSpaceUnder;
     public float cameraEdgeHor;
-    public Transform cameraEdgeVertical;
-    public Transform test;
+    public float playerHeight;
 
     private bool cameraCorrectAllowHor = false; // flag allow to chage side
     private bool allowMoveCameraHor = true;
+    private bool cameraCorrectAllowVer = false;
+    private bool allowMoveCameraVerUp = false;
+    private bool allowMoveCameraVerDown = false;
 
     private Animator anim;
     private float cameraEdgeUp;
+    private float cameraEdgeDown;
+
 
     // Use this for initialization
     void Start()
     {
-        cameraEdgeUp = transform.position.y + (2 * camera.orthographicSize) * playerSpaceAbove / 100; // calculate vertical edge of camera (% of height)
-        float cameraEdgePosY = (2 * camera.orthographicSize) * playerSpaceUnder / 100;
-        cameraEdgeVertical.transform.position = new Vector3(player.transform.position.x, transform.position.y - cameraEdgePosY, player.transform.position.z);
+        cameraEdgeUp = transform.position.y + (2 * camera.orthographicSize) * playerSpaceAbove / 100 - (playerHeight / 2f); // calculate vertical edge of camera (% of height)
+        cameraEdgeDown = transform.position.y - (2 * camera.orthographicSize) * playerSpaceUnder / 100 + (playerHeight / 2f);
         anim = player.GetComponent<Animator>();
-        test.transform.position = new Vector3(player.transform.position.x, cameraEdgeUp, player.transform.position.z);
     }
 
 
@@ -36,7 +39,12 @@ public class CameraFollow : MonoBehaviour {
         transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z);
         cameraCorrectAllowHor = false;
     }
-    /*changes side*/
+    void SetCameraCorrectAllowVerFalse()
+    {
+        transform.position = new Vector3(transform.position.x, player.transform.position.y + cameraOffsetY, transform.position.z);
+        cameraCorrectAllowVer = false;
+    }
+    /**/
     void CameraCorrectHorizontal()
     {
         if (cameraOffsetX < 0) // facing left
@@ -63,27 +71,34 @@ public class CameraFollow : MonoBehaviour {
         }
 
     }
+    void CameraCorrectVertical()
+    {
+        /*if (transform.position.y - player.transform.position.y > 0) // correct down
+            if (transform.position.y - player.transform.position.y > cameraOffsetY)
+                transform.position = new Vector3(transform.position.x, transform.position.y - cameraStepY, transform.position.z);
+            else
+                SetCameraCorrectAllowVerFalse();*/
+    }
     void CameraMoveHorizontal()
     {
         transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z); // following camera
     }
     void CameraMoveVertical()
     {
-        transform.position = new Vector3(transform.position.x, player.transform.position.y + cameraOffsetY, transform.position.z); // following camera
+        if (allowMoveCameraVerUp)
+            transform.position = new Vector3(transform.position.x, player.transform.position.y - cameraEdgeUp, transform.position.z); // following camera
+        if (allowMoveCameraVerDown)
+            transform.position = new Vector3(transform.position.x, player.transform.position.y - cameraEdgeDown, transform.position.z); // following camera
     }
     
 	
 	// Update is called once per frame
-	void FixedUpdate () 
+	void Update () 
     {
-        /*if ((player.transform.localScale.x < 0 && cameraOffsetX > 0) || (player.transform.localScale.x > 0 && cameraOffsetX < 0)) // check change of facing
-        {
-            cameraOffsetX = -cameraOffsetX;
-            cameraCorrectAllowHor = true;
-        }*/
         if (anim.GetBool("wallAttached"))
             allowMoveCameraHor = false;
-
+        if (anim.GetBool("grounded"))
+            cameraCorrectAllowVer = true;
         if (transform.position.x - player.transform.position.x > cameraEdgeHor && cameraOffsetX > 0)
         {
             cameraCorrectAllowHor = true;
@@ -103,16 +118,40 @@ public class CameraFollow : MonoBehaviour {
             allowMoveCameraHor = true;
         }
 
+        if (player.transform.position.y - transform.position.y > cameraEdgeUp)
+        {
+            allowMoveCameraVerUp = true;
+            allowMoveCameraVerDown = false;
+            cameraCorrectAllowVer = false;
+        }
+        else
+            allowMoveCameraVerUp = false;
+
+        if (player.transform.position.y - transform.position.y < cameraEdgeDown)
+        {
+            allowMoveCameraVerDown = true;
+            allowMoveCameraVerUp = false;
+            cameraCorrectAllowVer = false;
+        }
+        else
+        {
+            allowMoveCameraVerDown = false;
+        }
+
 
         if (cameraCorrectAllowHor)
         {
             CameraCorrectHorizontal();
         }
+
         else
         {
             if (allowMoveCameraHor)
                 CameraMoveHorizontal();
         }
+        CameraMoveVertical();
+        if (cameraCorrectAllowVer)
+            CameraCorrectVertical();
             
 	}
 }
