@@ -71,13 +71,17 @@ public class PlayerController : MonoBehaviour {
         else
         {
             nowWallRuning = false;
+            isRush_wallRun = false;
             wallRunDone = true;
         }
     }
     void Rush()
     {
         if (wallAttached)
+        {
             nowRushing = false;
+            isRush_wallRun = false;
+        }
         if (Mathf.Abs(transform.position.x - startPosition) < rushDistance)
             rigidbody2D.velocity = new Vector2(rushSpeed, 0);
         else
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour {
                 airRushDone = true;
             }
             nowRushing = false;
+            isRush_wallRun = false;
         }
     }
     void Flip()
@@ -107,12 +112,12 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
             isJump = true;  // jump button pressed
-        else
-            isJump = false;
+        /*else
+            isJump = false;*/
         if (Input.GetKeyDown(KeyCode.LeftControl))
             isRush_wallRun = true;
-        else
-            isRush_wallRun = false;
+        /*else
+            isRush_wallRun = false;*/
 
 
         if (isRush_wallRun && !(nowRushing || nowWallRuning))
@@ -153,7 +158,7 @@ public class PlayerController : MonoBehaviour {
             rigidbody2D.velocity = new Vector2(playerCurLineSpeed, rigidbody2D.velocity.y);  // movig player with const speed
         }
 
-        if (isJump)                //  if jump button pressed
+        if (isJump && !(nowRushing || nowWallRuning))                //  if jump button pressed
         {
             if (grounded)          // if player on the ground
             {
@@ -172,6 +177,7 @@ public class PlayerController : MonoBehaviour {
                 doubleJump = true;
                 anim.SetBool("doubleJump", false);
             }
+            isJump = false;
         }
         if (nowWallRuning)
             WallRun();
