@@ -77,12 +77,12 @@ public class PlayerController : MonoBehaviour {
     }
     void Rush()
     {
-        if (wallAttached)
+        /*if (wallAttached)
         {
             nowRushing = false;
             isRush_wallRun = false;
-        }
-        if (Mathf.Abs(transform.position.x - startPosition) < rushDistance)
+        }*/
+        if ((Mathf.Abs(transform.position.x - startPosition) < rushDistance) && !wallAttached)
             rigidbody2D.velocity = new Vector2(rushSpeed, 0);
         else
         {
