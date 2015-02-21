@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     public float rushDistance;
 
 
+
     private float playerCurLineSpeed; // current players speed
     private float radius = 0.06f;     // radius of groundcheck circle
     private float wallCheckWidth;     // width of rectangle for wallCheck
@@ -44,8 +45,8 @@ public class PlayerController : MonoBehaviour {
         groundCheckWidth = playerWidth;
         float groundCheckCoordY = transform.position.y - (playerHeight / 2f - radius);    // vertical coordinates of groundCheck object
         float wallCheckCoordX = transform.position.x + (playerWidth / 2f - radius); // horizontal coordinates of wallCheck object
-        groundCheck.transform.position = new Vector3(-wallCheckCoordX, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
-        wallCheck.transform.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
+        groundCheck.position = new Vector3(-wallCheckCoordX, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
+        wallCheck.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
     }
 
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour {
     }
     void WallRun()
     {
-        if (Mathf.Abs(transform.position.y - startPosition) < wallRunDistance)
+        if ((Mathf.Abs(transform.position.y - startPosition) < wallRunDistance) && wallAttached)
             rigidbody2D.velocity = new Vector2(0, wallRunSpeed);
         else
         {
@@ -77,11 +78,6 @@ public class PlayerController : MonoBehaviour {
     }
     void Rush()
     {
-        /*if (wallAttached)
-        {
-            nowRushing = false;
-            isRush_wallRun = false;
-        }*/
         if ((Mathf.Abs(transform.position.x - startPosition) < rushDistance) && !wallAttached)
             rigidbody2D.velocity = new Vector2(rushSpeed, 0);
         else
@@ -144,6 +140,7 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("grounded", grounded);
         wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckWidth, wallCheck.position.y + playerHeight), whatIsWall); // check wall attach of player
         anim.SetBool("wallAttached", wallAttached);
+
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)

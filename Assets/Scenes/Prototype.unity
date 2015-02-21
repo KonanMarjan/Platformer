@@ -298,8 +298,9 @@ GameObject:
   - 4: {fileID: 109920325}
   - 212: {fileID: 109920324}
   - 61: {fileID: 109920323}
+  - 114: {fileID: 109920326}
   m_Layer: 8
-  m_Name: platform_sample_400x75
+  m_Name: rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,11 +348,23 @@ Transform:
   m_PrefabInternal: {fileID: 1307109166}
   m_GameObject: {fileID: 109920322}
   m_LocalRotation: {x: 0, y: 0, z: -.216804177, w: .976215184}
-  m_LocalPosition: {x: 319, y: 84, z: 0}
-  m_LocalScale: {x: 6.76132774, y: 1, z: 1}
+  m_LocalPosition: {x: 329.100006, y: 127.599998, z: 0}
+  m_LocalScale: {x: 4.93859005, y: .277913392, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!114 &109920326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 109920322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14477c60e64d8048bbe99c358bcf986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1995256784}
 --- !u!1 &112741123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,11 +2863,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 407978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 319
+      value: 329.100006
       objectReference: {fileID: 0}
     - target: {fileID: 407978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 84
+      value: 127.599998
       objectReference: {fileID: 0}
     - target: {fileID: 407978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2886,7 +2899,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 407978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
       propertyPath: m_LocalScale.x
-      value: 6.76132774
+      value: 4.93859005
+      objectReference: {fileID: 0}
+    - target: {fileID: 407978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
+      propertyPath: m_LocalScale.y
+      value: .277913392
+      objectReference: {fileID: 0}
+    - target: {fileID: 107978, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
+      propertyPath: m_Name
+      value: rope
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a828a67c0ee47240942f4d2da532d81, type: 2}
@@ -4066,7 +4087,7 @@ MonoBehaviour:
   groundCheck: {fileID: 2100514687}
   wallCheck: {fileID: 2009283829}
   wallRunSpeed: 50
-  wallRunDistance: 20
+  wallRunDistance: 30
   rushSpeed: 100
   rushDistance: 50
 --- !u!50 &1995256788
@@ -4093,8 +4114,8 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: 10.000001, y: 4.92636776}
-  m_Center: {x: 0, y: 5.0368166}
+  m_Size: {x: 10.0111427, y: 4.64294052}
+  m_Center: {x: -.0055706501, y: 4.88832188}
 --- !u!58 &1995256790
 CircleCollider2D:
   m_ObjectHideFlags: 0
