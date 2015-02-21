@@ -128,6 +128,8 @@ public class PlayerController : MonoBehaviour {
                 startPosition = transform.position.y;
                 nowWallRuning = true;
             }
+            else
+                isRush_wallRun = false;
             if ((grounded || !airRushDone) && !wallAttached)
             {
                 nowRushing = true;
