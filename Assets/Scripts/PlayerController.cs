@@ -59,9 +59,10 @@ public class PlayerController : MonoBehaviour {
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
     }
 
-    public void JumpButtomPressed()
+    /*public void JumpButtomPressed()
     {
         isJump = true;
+
     }
     public void RushButtonPressed()
     {
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour {
     public void Restart()
     {
         Application.LoadLevel(0);
-    }
+    }*/
 
     void Jump(bool firstJump)
     {
@@ -150,7 +151,18 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.LeftControl))
             isRush_wallRun = true;
 
-        
+        Touch myTouch = new Touch();
+        if (Input.touchCount > 0)
+        {
+            myTouch = Input.GetTouch(0);
+            if (myTouch.phase == TouchPhase.Began)
+            {
+                if (myTouch.position.x < Screen.width / 2)
+                    isJump = true;  // jump button pressed
+                else
+                    isRush_wallRun = true;
+            }
+        }
 
 
 
