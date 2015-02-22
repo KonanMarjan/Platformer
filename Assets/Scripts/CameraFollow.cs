@@ -30,6 +30,7 @@ public class CameraFollow : MonoBehaviour {
         cameraEdgeUp = transform.position.y + (2 * camera.orthographicSize) * playerSpaceAbove / 100 - (playerHeight / 2f);    // calculate vertical up edge of camera (% to units)
         cameraEdgeDown = transform.position.y - (2 * camera.orthographicSize) * playerSpaceUnder / 100 - (playerHeight / 2f);  // calculate vertical down edge of camera (% to units)
         anim = player.GetComponent<Animator>();
+        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, player.transform.position.y + cameraOffsetY, transform.position.z);
     }
 
 

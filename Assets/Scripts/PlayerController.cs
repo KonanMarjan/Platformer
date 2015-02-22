@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 
     private float playerCurLineSpeed; // current players speed
     private float radius = 0.06f;     // radius of groundcheck circle
-    private float ropeCheckRadius = 0.02f;
+    private float ropeCheckRadius = 0.1f;
     private float wallCheckWidth;     // width of rectangle for wallCheck
     private float groundCheckWidth;
     private bool isJump = false;      // jump button pressed;
@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour {
     private bool airRushDone = false;
     private int ropeAttached = 0;
     private bool atRope = false;
+    private bool facingRight = true;
 
 
     // Use this for initialization
@@ -51,12 +52,25 @@ public class PlayerController : MonoBehaviour {
         groundCheckWidth = playerWidth;
         float groundCheckCoordY = transform.position.y - (playerHeight / 2f - radius);    // vertical coordinates of groundCheck object
         float wallCheckCoordX = transform.position.x + (playerWidth / 2f - radius); // horizontal coordinates of wallCheck object
-        groundCheck.position = new Vector3(-wallCheckCoordX, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
+        float groundCheckCoordX = transform.position.x - (playerWidth / 2f - radius);
+        groundCheck.position = new Vector3(groundCheckCoordX, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
         wallCheck.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
         ropeCheck.position = new Vector3(transform.position.x, transform.position.y + playerHeight/2f + ropeCheckHeight, transform.position.z);
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
     }
 
+    public void JumpButtomPressed()
+    {
+        isJump = true;
+    }
+    public void RushButtonPressed()
+    {
+        isRush_wallRun = true;
+    }
+    public void Restart()
+    {
+        Application.LoadLevel(0);
+    }
 
     void Jump(bool firstJump)
     {
@@ -80,9 +94,12 @@ public class PlayerController : MonoBehaviour {
         float angle;
         angle = rope.gameObject.transform.rotation.eulerAngles.z;
         if (angle > 180)
+        {
             angle = 360 - angle;
-        float ySpeed = -playerCurLineSpeed * Mathf.Tan(angle / 180 * Mathf.PI);
-        rigidbody2D.velocity = new Vector2(playerCurLineSpeed, ySpeed); 
+        }
+
+        float ySpeed = Mathf.Abs(playerCurLineSpeed)* Mathf.Tan(angle / 180 * Mathf.PI);
+        rigidbody2D.velocity = new Vector2(playerCurLineSpeed, -ySpeed); 
     }
     void WallRun()
     {
@@ -91,6 +108,7 @@ public class PlayerController : MonoBehaviour {
         else
         {
             nowWallRuning = false;
+            anim.SetBool("nowWallRuning", nowWallRuning);
             isRush_wallRun = false;
             wallRunDone = true;
         }
@@ -106,6 +124,7 @@ public class PlayerController : MonoBehaviour {
                 airRushDone = true;
             }
             nowRushing = false;
+            anim.SetBool("nowRushing", nowRushing);
             isRush_wallRun = false;
         }
     }
@@ -119,6 +138,7 @@ public class PlayerController : MonoBehaviour {
         playerLineSpeed = -playerLineSpeed;
         wallCheckWidth = -wallCheckWidth;
         groundCheckWidth = -groundCheckWidth;
+        facingRight = !facingRight;
     }
 
 	
@@ -127,12 +147,11 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
             isJump = true;  // jump button pressed
-        /*else
-            isJump = false;*/
         if (Input.GetKeyDown(KeyCode.LeftControl))
             isRush_wallRun = true;
-        /*else
-            isRush_wallRun = false;*/
+
+        
+
 
 
         if (isRush_wallRun && !(nowRushing || nowWallRuning))
@@ -142,12 +161,15 @@ public class PlayerController : MonoBehaviour {
             {
                 startPosition = transform.position.y;
                 nowWallRuning = true;
+                anim.SetBool("nowWallRuning", nowWallRuning);
+                
             }
             else
                 isRush_wallRun = false;
-            if ((grounded || !airRushDone) && !wallAttached)
+            if ((grounded || !airRushDone) && !wallAttached && !atRope)
             {
                 nowRushing = true;
+                anim.SetBool("nowRushing", nowRushing);
                 startPosition = transform.position.x;
             }
         }
@@ -161,13 +183,14 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("wallAttached", wallAttached);
         Collider2D[] collider = new Collider2D[1];
         ropeAttached = Physics2D.OverlapCircleNonAlloc(ropeCheck.position, ropeCheckRadius, collider, whatIsRope);
-        if (ropeAttached > 0)
+        if (ropeAttached > 0 && ((collider[0].gameObject.transform.rotation.eulerAngles.z > 180 && facingRight) || (collider[0].gameObject.transform.rotation.eulerAngles.z < 180 && !facingRight)))
         {
             atRope = true;
             RopeSlide(collider[0]);
         }
         else
             atRope = false;
+        anim.SetBool("ropeAttached", atRope);
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
@@ -208,7 +231,7 @@ public class PlayerController : MonoBehaviour {
         if (nowWallRuning)
             WallRun();
         
-        if (nowRushing && !atRope)
+        if (nowRushing)
             Rush();
     }
 }
