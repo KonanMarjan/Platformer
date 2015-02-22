@@ -17,11 +17,15 @@ public class PlayerController : MonoBehaviour {
     public float wallRunDistance;
     public float rushSpeed;
     public float rushDistance;
+    public Transform ropeCheck;
+    public LayerMask whatIsRope;
+    public float ropeCheckHeight;
 
 
 
     private float playerCurLineSpeed; // current players speed
     private float radius = 0.06f;     // radius of groundcheck circle
+    private float ropeCheckRadius = 0.02f;
     private float wallCheckWidth;     // width of rectangle for wallCheck
     private float groundCheckWidth;
     private bool isJump = false;      // jump button pressed;
@@ -35,6 +39,8 @@ public class PlayerController : MonoBehaviour {
     private float startPosition;   // start position of rush or wall run
     private bool wallRunDone = false;
     private bool airRushDone = false;
+    private int ropeAttached = 0;
+    private bool atRope = false;
 
 
     // Use this for initialization
@@ -47,6 +53,7 @@ public class PlayerController : MonoBehaviour {
         float wallCheckCoordX = transform.position.x + (playerWidth / 2f - radius); // horizontal coordinates of wallCheck object
         groundCheck.position = new Vector3(-wallCheckCoordX, groundCheckCoordY, transform.position.z);  // put groundCheck object in correct position
         wallCheck.position = new Vector3(wallCheckCoordX, groundCheckCoordY, transform.position.z);         // put wallCheck object in correct position
+        ropeCheck.position = new Vector3(transform.position.x, transform.position.y + playerHeight/2f + ropeCheckHeight, transform.position.z);
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
     }
 
@@ -64,6 +71,18 @@ public class PlayerController : MonoBehaviour {
         {
             rigidbody2D.velocity = new Vector2(0, -slideSpeed);  // player slide
         }
+    }
+    void RopeSlide(Collider2D rope)
+    {
+        
+        doubleJump = true;
+        rigidbody2D.AddForce(new Vector2(0, -Physics2D.gravity.y)); // force to destroy gravity
+        float angle;
+        angle = rope.gameObject.transform.rotation.eulerAngles.z;
+        if (angle > 180)
+            angle = 360 - angle;
+        float ySpeed = -playerCurLineSpeed * Mathf.Tan(angle / 180 * Mathf.PI);
+        rigidbody2D.velocity = new Vector2(playerCurLineSpeed, ySpeed); 
     }
     void WallRun()
     {
@@ -140,7 +159,15 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("grounded", grounded);
         wallAttached = Physics2D.OverlapArea(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckWidth, wallCheck.position.y + playerHeight), whatIsWall); // check wall attach of player
         anim.SetBool("wallAttached", wallAttached);
-
+        Collider2D[] collider = new Collider2D[1];
+        ropeAttached = Physics2D.OverlapCircleNonAlloc(ropeCheck.position, ropeCheckRadius, collider, whatIsRope);
+        if (ropeAttached > 0)
+        {
+            atRope = true;
+            RopeSlide(collider[0]);
+        }
+        else
+            atRope = false;
         if (grounded)
         {
             playerCurLineSpeed = playerLineSpeed;   // correction of line speed after jump (dispose of horizontal component of jump speed)
@@ -159,7 +186,7 @@ public class PlayerController : MonoBehaviour {
 
         if (isJump && !(nowRushing || nowWallRuning))                //  if jump button pressed
         {
-            if (grounded)          // if player on the ground
+            if (grounded || atRope)          // if player on the ground
             {
                 Jump(true);        // make first jump (flag "true" is telling that it`s a first jump)
             }
@@ -181,7 +208,7 @@ public class PlayerController : MonoBehaviour {
         if (nowWallRuning)
             WallRun();
         
-        if (nowRushing )
+        if (nowRushing && !atRope)
             Rush();
     }
 }
