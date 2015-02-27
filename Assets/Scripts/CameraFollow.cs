@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
 
-    public GameObject player;     // reference to player
+    private GameObject player;     // reference to player
     public float cameraOffsetX;
     public float cameraOffsetY;
     public float cameraStepX;
@@ -27,6 +27,7 @@ public class CameraFollow : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         cameraEdgeUp = transform.position.y + (2 * camera.orthographicSize) * playerSpaceAbove / 100 - (playerHeight / 2f);    // calculate vertical up edge of camera (% to units)
         cameraEdgeDown = transform.position.y - (2 * camera.orthographicSize) * playerSpaceUnder / 100 - (playerHeight / 2f);  // calculate vertical down edge of camera (% to units)
         anim = player.GetComponent<Animator>();

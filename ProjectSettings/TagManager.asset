@@ -3,6 +3,14 @@
 --- !u!78 &1
 TagManager:
   tags:
+  - coin
+  - levelManager
+  - start
+  - gameManager
+  - finishMenu
+  - totalScore
+  - score
+  - mainCollider
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
