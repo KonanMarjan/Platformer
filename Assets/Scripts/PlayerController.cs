@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
     private float playerWidth;
     private float playerHeight;
     private float playerCurLineSpeed; // current players speed
-    private float ropeCheckDistance = 1f;
+    private float ropeCheckDistance = 1.5f;
     private float groundCheckDirect = -1f;
     private float wallCheckDirect = 1f;
     private bool isJump = false;      // jump button pressed;
@@ -134,7 +134,6 @@ public class PlayerController : MonoBehaviour {
     void WallRun()
     {
         RaycastHit2D headHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(0, 1f), ropeCheckDistance, whatIsGround);
-        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(transform.position.x, transform.position.y + playerHeight / 2 + 3* ropeCheckDistance));
         if (Mathf.Abs(transform.position.y - startPosition) < wallRunDistance && wallAttached && headHit.collider == null)
             rigidbody2D.velocity = new Vector2(0, wallRunSpeed);
         else
@@ -236,6 +235,8 @@ public class PlayerController : MonoBehaviour {
 	}
     void FixedUpdate()
     {
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(transform.position.x, transform.position.y + playerHeight / 2 + 3 * ropeCheckDistance));
+
         if (GameManager.instance.Pause)
         {
             rigidbody2D.velocity = new Vector2(0, 0);

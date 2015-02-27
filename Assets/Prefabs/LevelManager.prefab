@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 401636}
   - 114: {fileID: 11401638}
+  - 114: {fileID: 11401600}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: levelManager
@@ -25,7 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 401638}
   - 212: {fileID: 21201638}
-  - 61: {fileID: 6101638}
+  - 68: {fileID: 6860390}
   m_Layer: 0
   m_Name: Finish
   m_TagString: Finish
@@ -86,8 +87,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401636}
   m_RootOrder: 0
---- !u!61 &6101638
-BoxCollider2D:
+--- !u!68 &6860390
+EdgeCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -95,8 +96,21 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Size: {x: .955530345, y: 8.38391685}
-  m_Center: {x: -.327929467, y: 2.70196533}
+  m_Points:
+  - {x: .787835896, y: -1.2851603}
+  - {x: .690091074, y: 6.93987179}
+--- !u!114 &11401600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 101636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d61a4187883a94f8dbb7e80028fff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelMenu: {fileID: 11423798, guid: f1e38c6d5d12f9f44b842b222bacd76e, type: 2}
 --- !u!114 &11401638
 MonoBehaviour:
   m_ObjectHideFlags: 1
