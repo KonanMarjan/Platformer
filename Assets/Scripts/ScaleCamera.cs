@@ -10,6 +10,6 @@ public class ScaleCamera : MonoBehaviour {
 
 		int height = Mathf.RoundToInt(targetWidth / (float)Screen.width * Screen.height);
 
-		camera.orthographicSize = height / pixelsToUnits / 2;
+		GetComponent<Camera>().orthographicSize = height / pixelsToUnits / 2;
 	}
 }

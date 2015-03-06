@@ -9,9 +9,9 @@ public class ropeScript : MonoBehaviour {
 	void Start () 
     {
         player = GameObject.FindWithTag("Player");
-        Physics2D.IgnoreCollision(player.collider2D, collider2D);
+        Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         collIgnore = player.GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(collIgnore, collider2D);
+        Physics2D.IgnoreCollision(collIgnore, GetComponent<Collider2D>());
 	}
 	
 	// Update is called once per frame

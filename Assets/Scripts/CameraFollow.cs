@@ -1,160 +1,95 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraFollow : MonoBehaviour {
 
     private GameObject player;     // reference to player
     public float cameraOffsetX;
     public float cameraOffsetY;
-    public float cameraStepX;
-    public float cameraStepY;
-    public float playerSpaceAbove;  // space for player above center of camera (% from height)
-    public float playerSpaceUnder;  // space for player under center of camera (% from height)
-    public float cameraEdgeHor;     // horizontal edge
-    public float playerHeight;
+    public float xSmooth;
+    public float ySmooth;
+    public float tragetSmooth;
+    //public float correctSmooth;
+    //public float changeSideSmooth;
 
-    private bool cameraCorrectAllowHor = false; // flag allow to chage side
-    private bool allowMoveCameraHor = true;
-    private bool cameraCorrectAllowVer = false;
-    private bool allowMoveCameraUp = false;
-    private bool allowMoveCameraDown = false;
+    
 
-    private Animator anim;
-    private float cameraEdgeUp;    // vertical upo edge
-    private float cameraEdgeDown;  // vertical down edge
-
-
+    void Awake()
+    {
+        
+    }
     // Use this for initialization
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        cameraEdgeUp = transform.position.y + (2 * camera.orthographicSize) * playerSpaceAbove / 100 - (playerHeight / 2f);    // calculate vertical up edge of camera (% to units)
-        cameraEdgeDown = transform.position.y - (2 * camera.orthographicSize) * playerSpaceUnder / 100 - (playerHeight / 2f);  // calculate vertical down edge of camera (% to units)
-        anim = player.GetComponent<Animator>();
-        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, player.transform.position.y + cameraOffsetY, transform.position.z);
+        
+        player = GameObject.FindGameObjectWithTag("Player");
+
+        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, player.transform.position.y + cameraOffsetY, transform.position.z);       
     }
 
 
-    /* forbid change side and correction position of camera */
-    void SetCameraCorrectAllowHorFalse()
-    {
-        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z);  // correction position of camera
-        cameraCorrectAllowHor = false;  // forbid correct camera horizontaly
-    }
-    void SetCameraCorrectAllowVerFalse()
-    {
-        transform.position = new Vector3(transform.position.x, player.transform.position.y + cameraOffsetY, transform.position.z);   // correction position of camera
-        cameraCorrectAllowVer = false;  // forbid correct camera verticaly
-    }
-    /*correction camera*/
-    void CameraCorrectHorizontal()
-    {
-        if (cameraOffsetX < 0) // facing left
-        {
-            if (transform.position.x - player.transform.position.x > cameraOffsetX)  
-            {
-                transform.position = new Vector3(transform.position.x - cameraStepX, transform.position.y, transform.position.z); // transport camera to other side
-                
-            }
-            else
-            {
-                SetCameraCorrectAllowHorFalse();
-            }
-        } 
-        else                  // facing right
-        {
-            if (transform.position.x - player.transform.position.x < cameraOffsetX)
-            {
-                transform.position = new Vector3(transform.position.x + cameraStepX, transform.position.y, transform.position.z);
-            }
-            else
-            {
-                SetCameraCorrectAllowHorFalse();
-            }
-        }
 
-    }
-    void CameraCorrectVertical()
+    void FollowHorizontal()
     {
-        /*if (transform.position.y - player.transform.position.y > 0) // correct down
-            if (transform.position.y - player.transform.position.y > cameraOffsetY)
-                transform.position = new Vector3(transform.position.x, transform.position.y - cameraStepY, transform.position.z);
-            else
-                SetCameraCorrectAllowVerFalse();*/
+        float targetX = Mathf.Lerp(transform.position.x, player.transform.position.x + cameraOffsetX, xSmooth * Time.deltaTime); ;
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
     }
-    void CameraMoveHorizontal()
+
+
+    void FollowVertical()
     {
-        transform.position = new Vector3(player.transform.position.x + cameraOffsetX, transform.position.y, transform.position.z); // following camera
+        float targetY = Mathf.Lerp(transform.position.y, player.transform.position.y + cameraOffsetY, ySmooth * Time.deltaTime); ;
+        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
     }
-    void CameraMoveVertical()
+    void GoToTarget(Collider2D target)
     {
-        if (allowMoveCameraUp)
-            transform.position = new Vector3(transform.position.x, player.transform.position.y - cameraEdgeUp, transform.position.z); // following camera
-        if (allowMoveCameraDown)
-            transform.position = new Vector3(transform.position.x, player.transform.position.y - cameraEdgeDown, transform.position.z); // following camera
+        float targetX = Mathf.Lerp(transform.position.x, target.transform.position.x, tragetSmooth * Time.deltaTime);
+        float targetY = Mathf.Lerp(transform.position.y, target.transform.position.y, tragetSmooth * Time.deltaTime);
+        transform.position = new Vector3(targetX, targetY, transform.position.z);
     }
-    
-	
+    void PlayerLockedCamera()
+    {
+        FollowHorizontal();
+        FollowVertical();
+    }
+    /*void CorrectVerticly()
+    {
+        float targetY = Mathf.Lerp(transform.position.y, player.transform.position.y + cameraOffsetY, correctSmooth * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
+    }
+    void CorrectHorizontaly()
+    {
+        float targetX = Mathf.Lerp(transform.position.x, player.transform.position.x + cameraOffsetX, correctSmooth * Time.deltaTime);
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+    }
+    */
 	// Update is called once per frame
-	void Update () 
+    void Update()
     {
-        if (anim.GetBool("wallAttached"))   // touching wall
-            allowMoveCameraHor = false;     // is stoping camera
-        if (anim.GetBool("grounded"))
-            cameraCorrectAllowVer = true;
-        if (transform.position.x - player.transform.position.x > cameraEdgeHor && cameraOffsetX > 0) // player out of horizontal camera edge (after changing side) and facing right
+        if (player.GetComponent<ZonesScript>().allowHor)
         {
-            cameraCorrectAllowHor = true;
+            FollowHorizontal();
+        }
+        else if (player.GetComponent<ZonesScript>().allowVer)
+        {
+            FollowVertical();
+        }
+        else if (player.GetComponent<ZonesScript>().allowTarget)
+            GoToTarget(player.GetComponent<ZonesScript>().target);
+        else if (player.GetComponent<ZonesScript>().changeSide)
+        {
             cameraOffsetX = -cameraOffsetX;
-            allowMoveCameraHor = true;
-        }
-        if (transform.position.x - player.transform.position.x < -cameraEdgeHor && cameraOffsetX < 0) // player out of horizontal camera edge (after changing side) and facing left
-        {
-            cameraCorrectAllowHor = true;
-            cameraOffsetX = -cameraOffsetX;
-            allowMoveCameraHor = true;
-        }
-
-        if ((cameraOffsetX > 0 && player.transform.position.x - transform.position.x > cameraEdgeHor) || (cameraOffsetX < 0 && player.transform.position.x - transform.position.x < -cameraEdgeHor))  // player out of camera edge without changing side
-        {
-            cameraCorrectAllowHor = true;
-            allowMoveCameraHor = true;
-        }
-
-        if (player.transform.position.y - transform.position.y > cameraEdgeUp)
-        {
-            allowMoveCameraUp = true;
-            allowMoveCameraDown = false;
-            cameraCorrectAllowVer = false;
-        }
-        else
-            allowMoveCameraUp = false;
-
-        if (player.transform.position.y - transform.position.y < cameraEdgeDown)
-        {
-            allowMoveCameraDown = true;
-            allowMoveCameraUp = false;
-            cameraCorrectAllowVer = false;
-        }
-        else
-        {
-            allowMoveCameraDown = false;
-        }
-
-
-        if (cameraCorrectAllowHor)
-        {
-            CameraCorrectHorizontal();
+            player.GetComponent<ZonesScript>().changeSide = false;
         }
 
         else
-        {
-            if (allowMoveCameraHor)
-                CameraMoveHorizontal();
-        }
-        CameraMoveVertical();
-        if (cameraCorrectAllowVer)
-            CameraCorrectVertical();
-            
-	}
+            PlayerLockedCamera();
+        //if (player.GetComponent<PlayerController>().Grounded)
+
+
+        /*FollowVertival();
+        FollowHorizontal();*/
+    }
+
 }

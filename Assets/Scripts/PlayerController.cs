@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
     private float playerWidth;
     private float playerHeight;
     private float playerCurLineSpeed; // current players speed
-    private float ropeCheckDistance = 1.5f;
+    private float ropeCheckDistance = 4f;
     private float groundCheckDirect = -1f;
     private float wallCheckDirect = 1f;
     private bool isJump = false;      // jump button pressed;
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
     private bool wallAttached = false; //player is attached to wall
     private bool doubleJump = true;   // double jump is allow
     private Animator anim;
+    private Rigidbody2D rigid;
     private bool isRush_wallRun = false;
     private bool nowRushing = false;
     private bool nowWallRuning = false;
@@ -45,6 +46,14 @@ public class PlayerController : MonoBehaviour {
     private bool facingRight = true;
     private bool wallClimbAllowHor = false;
 
+    public bool Grounded
+    {
+        get
+        {
+            return grounded;
+        }
+    }
+
     void Awake()
     {
         if (instance == null)
@@ -54,6 +63,7 @@ public class PlayerController : MonoBehaviour {
                 Destroy(gameObject);
         //DontDestroyOnLoad(gameObject);
         levelManager = GameObject.FindWithTag("levelManager");
+        
     }
     // Use this for initialization
     void Start()
@@ -61,23 +71,45 @@ public class PlayerController : MonoBehaviour {
         playerHeight = (float)playerPixelHeight / (float)pixelsPerUnits * scale;
         playerWidth = (float)playerPixelWidth / (float)pixelsPerUnits * scale;
         anim = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
         playerCurLineSpeed = playerLineSpeed; // initializing current player speed
+        
+        
+        
     }
-
+    public bool GetFacingRight()
+    {
+        return facingRight;
+    }
     void Go(float speed)
     {
-        rigidbody2D.velocity = new Vector2(speed, rigidbody2D.velocity.y);  // movig player with const speed
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (!facingRight)
+                Flip();
+            //facingRight = true;
+            rigid.velocity = new Vector2(speed, rigid.velocity.y);  // movig player with const speed
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (facingRight)
+                Flip();
+            //facingRight = false;
+            rigid.velocity = new Vector2(speed, rigid.velocity.y);  // movig player with const speed
+        }
+        rigid.velocity = new Vector2(speed, rigid.velocity.y);  // movig player with const speed
     }
     void Jump()
     {
         airRushDone = false;
-            rigidbody2D.velocity = new Vector2(playerCurLineSpeed, jumpForceY); // vertical component of jump speed 
+            rigid.velocity = new Vector2(playerCurLineSpeed, jumpForceY); // vertical component of jump speed 
     }
     void WallSlide()
     {
         if (!grounded)
         {
-            rigidbody2D.velocity = new Vector2(0, -slideSpeed);  // player slide
+            rigid.velocity = new Vector2(0, -slideSpeed);  // player slide
         }
     }
     void WallClimb()
@@ -104,11 +136,11 @@ public class PlayerController : MonoBehaviour {
 
                 Debug.DrawLine(new Vector2(transform.position.x, transform.position.y - playerHeight / 2), climbHit.point, Color.red);
                 wallClimbAllowHor = true;
-                rigidbody2D.velocity = new Vector2(0, climbSpeed);
+                rigid.velocity = new Vector2(0, climbSpeed);
             }
             else
                 if (wallClimbAllowHor)
-                    rigidbody2D.velocity = new Vector2(speed, 0);
+                    rigid.velocity = new Vector2(speed, 0);
         }
         else
         {
@@ -120,7 +152,7 @@ public class PlayerController : MonoBehaviour {
     {
         
         doubleJump = true;
-        rigidbody2D.AddForce(new Vector2(0, -Physics2D.gravity.y)); // force to destroy gravity
+        rigid.AddForce(new Vector2(0, -Physics2D.gravity.y)); // force to destroy gravity
         float angle;
         angle = rope.gameObject.transform.rotation.eulerAngles.z;
         if (angle > 180)
@@ -129,13 +161,13 @@ public class PlayerController : MonoBehaviour {
         }
 
         float ySpeed = Mathf.Abs(playerCurLineSpeed)* Mathf.Tan(angle / 180 * Mathf.PI);
-        rigidbody2D.velocity = new Vector2(playerCurLineSpeed, -ySpeed); 
+        rigid.velocity = new Vector2(playerCurLineSpeed, -ySpeed); 
     }
     void WallRun()
     {
         RaycastHit2D headHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(0, 1f), ropeCheckDistance, whatIsGround);
         if (Mathf.Abs(transform.position.y - startPosition) < wallRunDistance && wallAttached && headHit.collider == null)
-            rigidbody2D.velocity = new Vector2(0, wallRunSpeed);
+            rigid.velocity = new Vector2(0, wallRunSpeed);
         else
         {
             /*if (!wallAttached)
@@ -149,7 +181,7 @@ public class PlayerController : MonoBehaviour {
     void Rush()
     {
         if ((Mathf.Abs(transform.position.x - startPosition) < rushDistance) && !wallAttached)
-            rigidbody2D.velocity = new Vector2(rushSpeed, 0);
+            rigid.velocity = new Vector2(rushSpeed, 0);
         else
         {
             if (!grounded)
@@ -176,7 +208,8 @@ public class PlayerController : MonoBehaviour {
         facingRight = !facingRight;
     }
 
-	
+
+
 	// Update is called once per frame
 	void Update () 
     {
@@ -233,17 +266,18 @@ public class PlayerController : MonoBehaviour {
         }
 
 	}
+    
     void FixedUpdate()
     {
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(transform.position.x, transform.position.y + playerHeight / 2 + 3 * ropeCheckDistance));
 
         if (GameManager.instance.Pause)
         {
-            rigidbody2D.velocity = new Vector2(0, 0);
-            rigidbody2D.gravityScale = 0;
+            rigid.velocity = new Vector2(0, 0);
+            rigid.gravityScale = 0;
             return;
         }
-        else rigidbody2D.gravityScale = 1;
+        else rigid.gravityScale = 1;
         RaycastHit2D hitGround = Physics2D.Raycast(transform.position, new Vector2(0, groundCheckDirect), playerHeight/2, whatIsGround);
         if (hitGround.collider != null)
         {
@@ -263,13 +297,21 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("grounded", grounded);
         anim.SetBool("wallAttached", wallAttached);
         RaycastHit2D takeRope = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + playerHeight / 2), new Vector2(0, 1f), ropeCheckDistance, whatIsRope);
-        if (takeRope.collider != null && ((takeRope.collider.gameObject.transform.rotation.eulerAngles.z > 180 && facingRight) || (takeRope.collider.gameObject.transform.rotation.eulerAngles.z < 180 && !facingRight)))
+        
+        if (takeRope.collider != null)
         {
+            if ((takeRope.collider.gameObject.transform.rotation.eulerAngles.z > 180 && !facingRight) || (takeRope.collider.gameObject.transform.rotation.eulerAngles.z < 180 && facingRight))
+            {
+                Flip();
+            }
             atRope = true;
             RopeSlide(takeRope.collider);
         }
         else
             atRope = false;
+
+
+
         anim.SetBool("ropeAttached", atRope);
         if (grounded)
         {
@@ -317,4 +359,9 @@ public class PlayerController : MonoBehaviour {
             WallClimb();
         }
     }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), other);
+    }
+     
 }

@@ -25,7 +25,6 @@ public class coinScript : MonoBehaviour {
             LevelManager.instance.ScoreInc(1);
             levelMenu.instance.ScoreUpdate();
         }
-
-
     }
+
 }

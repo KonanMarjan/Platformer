@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour {
     public bool allowWallRun;
 
 
+
     public int Score
     {
         get
