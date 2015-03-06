@@ -3919,6 +3919,7 @@ MonoBehaviour:
   xSmooth: 3
   ySmooth: 3
   tragetSmooth: 2
+  correctSmooth: 3
 --- !u!114 &1159338744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5005,6 +5006,10 @@ Prefab:
     - target: {fileID: 6104282, guid: 2d59d00cd2bd2b04a896448faaa91fec, type: 2}
       propertyPath: m_Size.x
       value: 49.5945702
+      objectReference: {fileID: 0}
+    - target: {fileID: 11413308, guid: 2d59d00cd2bd2b04a896448faaa91fec, type: 2}
+      propertyPath: priority
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d59d00cd2bd2b04a896448faaa91fec, type: 2}

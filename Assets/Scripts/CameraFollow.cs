@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour {
     public float xSmooth;
     public float ySmooth;
     public float tragetSmooth;
-    //public float correctSmooth;
+    public float correctSmooth;
     //public float changeSideSmooth;
 
     
@@ -30,16 +30,16 @@ public class CameraFollow : MonoBehaviour {
 
 
 
-    void FollowHorizontal()
+    void FollowHorizontal(float smooth)
     {
-        float targetX = Mathf.Lerp(transform.position.x, player.transform.position.x + cameraOffsetX, xSmooth * Time.deltaTime); ;
+        float targetX = Mathf.Lerp(transform.position.x, player.transform.position.x + cameraOffsetX, smooth * Time.deltaTime); ;
         transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
     }
 
 
-    void FollowVertical()
+    void FollowVertical(float smooth)
     {
-        float targetY = Mathf.Lerp(transform.position.y, player.transform.position.y + cameraOffsetY, ySmooth * Time.deltaTime); ;
+        float targetY = Mathf.Lerp(transform.position.y, player.transform.position.y + cameraOffsetY, smooth * Time.deltaTime); ;
         transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
     }
     void GoToTarget(Collider2D target)
@@ -50,8 +50,8 @@ public class CameraFollow : MonoBehaviour {
     }
     void PlayerLockedCamera()
     {
-        FollowHorizontal();
-        FollowVertical();
+        FollowHorizontal(xSmooth);
+        FollowVertical(ySmooth);
     }
     /*void CorrectVerticly()
     {
@@ -69,11 +69,11 @@ public class CameraFollow : MonoBehaviour {
     {
         if (player.GetComponent<ZonesScript>().allowHor)
         {
-            FollowHorizontal();
+            FollowHorizontal(xSmooth);
         }
         else if (player.GetComponent<ZonesScript>().allowVer)
         {
-            FollowVertical();
+            FollowVertical(ySmooth);
         }
         else if (player.GetComponent<ZonesScript>().allowTarget)
             GoToTarget(player.GetComponent<ZonesScript>().target);
@@ -85,8 +85,10 @@ public class CameraFollow : MonoBehaviour {
 
         else
             PlayerLockedCamera();
-        //if (player.GetComponent<PlayerController>().Grounded)
-
+        if (player.GetComponent<PlayerController>().Grounded)
+        {
+            FollowVertical(correctSmooth);
+        }
 
         /*FollowVertival();
         FollowHorizontal();*/
