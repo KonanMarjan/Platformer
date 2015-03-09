@@ -11,7 +11,11 @@ public class ZonesScript : MonoBehaviour {
     [HideInInspector]
     public Collider2D target;
     [HideInInspector]
-    public bool changeSide = false;
+    public bool changeSideToLeft = false;
+    [HideInInspector]
+    public bool changeSideToRight = false;
+    [HideInInspector]
+    public bool changeCameraSide = false;
     private int priority = 0;
 	// Use this for initialization
 	void Start () {
@@ -68,7 +72,11 @@ public class ZonesScript : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "changeSide")
-            changeSide = true;
+        if (other.tag == "changeSideToLeft")
+            changeSideToLeft = true;
+        else if (other.tag == "changeSideToRight")
+            changeSideToRight = true;
+        if (other.tag == "changeCameraSide")
+            changeCameraSide = true;
     }
 }

@@ -77,17 +77,28 @@ public class CameraFollow : MonoBehaviour {
         }
         else if (player.GetComponent<ZonesScript>().allowTarget)
             GoToTarget(player.GetComponent<ZonesScript>().target);
-        else if (player.GetComponent<ZonesScript>().changeSide)
-        {
-            cameraOffsetX = -cameraOffsetX;
-            player.GetComponent<ZonesScript>().changeSide = false;
-        }
-
         else
             PlayerLockedCamera();
         if (player.GetComponent<PlayerController>().Grounded)
         {
             FollowVertical(correctSmooth);
+        }
+        if (player.GetComponent<ZonesScript>().changeSideToLeft)
+        {
+            if (player.GetComponent<PlayerController>().FacingRight)
+                player.GetComponent<PlayerController>().Flip();
+            player.GetComponent<ZonesScript>().changeSideToLeft = false;
+        }
+        else if (player.GetComponent<ZonesScript>().changeSideToRight)
+        {
+            if (!player.GetComponent<PlayerController>().FacingRight)
+                player.GetComponent<PlayerController>().Flip();
+            player.GetComponent<ZonesScript>().changeSideToRight = false;
+        }
+        if (player.GetComponent<ZonesScript>().changeCameraSide)
+        {
+            cameraOffsetX = -cameraOffsetX;
+            player.GetComponent<ZonesScript>().changeCameraSide = false;
         }
 
         /*FollowVertival();
