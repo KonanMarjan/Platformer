@@ -46,6 +46,14 @@ public class PlayerController : MonoBehaviour {
     private bool facingRight = true;
     private bool wallClimbAllowHor = false;
 
+    public bool FacingRight
+    {
+        get
+        {
+            return facingRight;
+        }
+    }
+
     public bool Grounded
     {
         get
@@ -194,7 +202,7 @@ public class PlayerController : MonoBehaviour {
             Go(playerCurLineSpeed);
         }
     }
-    void Flip()
+    public void Flip()
     {
         wallCheckDirect = -wallCheckDirect;
         Vector3 theScale = transform.localScale;
